@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: antiquewhite;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .heading {
+            border-bottom: 1px solid gray;
+            margin-bottom: 20px;
+        }
+        .choosing-section {
+            display: flex; /* Enables flexbox */
+            justify-content: space-between; /* Evenly distributes space between the items */
+            width: 100%; /* Full width of the parent container */
+            margin-bottom: 20px;
+        }
+        .inside-duke {
+            flex: 1; /* Each inside div takes equal width */
+            margin: 5px;
+            padding: 10px;
+            text-align: center; /* Border to visualize the child */
+        }
+        select, input[type="text"], input[type="date"], button {
+            width: 90%; /* Full width for inputs and buttons */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        select:focus, input[type="text"]:focus, input[type="date"]:focus {
+            border-color: #007bff; /* Change border color on focus */
+            outline: none;
+        }
+        button {
+            background-color: #007bff; /* Button background color */
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s; /* Animation effects */
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slightly increase size */
+        }
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border-radius: 8px; /* Rounded corners for the table */
+            overflow: hidden; /* To apply border-radius */
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+            transition: background-color 0.3s; /* Animation for row hover */
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #d1e7fd; /* Light blue on row hover */
+        }
+        tr:hover td {
+            font-weight: bold; /* Make text bold on row hover */
+        }
+        .delete-button {
+            background-color: #dc3545; /* Red color for delete button */
+            transition: background-color 0.3s, transform 0.3s; /* Animation effects */
+        }
+        .delete-button:hover {
+            background-color: #c82333; /* Darker red on hover */
+            transform: scale(1.05); /* Slightly increase size */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heading">
+            <h1>Budget Tracker Application</h1>
+        </div>
+        <div class="choosing-section">
+            <div class="inside-duke">
+                <label for="category">
+                    <select name="category" id="category">
+                        <option value="food">Food</option>
+                        <option value="travel">Travel</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other_expenses">Other Expenses</option>
+                    </select>
+                </label>
+            </div>
+            <div class="inside-duke">
+                <input type="text" placeholder="Enter your expense in ₹" class="we">
+            </div>
+            <div class="inside-duke">
+                <input type="date" class="get">
+            </div>
+            <div class="inside-duke">
+                <button class="add-entry">Add Entry</button>
+            </div>
+        </div>
+        <div class="result">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Expense Amount (₹)</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="expense-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        const addButton = document.querySelector(".add-entry");
+        const categorySelect = document.getElementById("category"); 
+        const expenseInput = document.querySelector(".we"); 
+        const dateInput = document.querySelector(".get");
+        const expenseTableBody = document.getElementById("expense-table-body");
+
+        addButton.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const selectedCategory = categorySelect.value; 
+            const expenseAmount = expenseInput.value; 
+            const selectedDate = dateInput.value; 
+
+            // Validate inputs
+            if (!selectedCategory || !expenseAmount || !selectedDate) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // Create a new row
+            const newRow = document.createElement("tr");
+
+            newRow.innerHTML = `
+                <td>${selectedCategory}</td>
+                <td>${expenseAmount}</td>
+                <td>${new Date(selectedDate).toLocaleDateString()}</td>
+                <td><button class="delete-button">Delete</button></td>
+            `;
+
+            expenseTableBody.appendChild(newRow);
+
+            // Reset input fields
+            expenseInput.value = "";
+            dateInput.value = "";
+
+            // Add delete functionality
+            const deleteButton = newRow.querySelector(".delete-button");
+            deleteButton.addEventListener("click", () => {
+                newRow.remove();
+            });
+        });
+    </script>
+</body>
+</html>
